@@ -1,7 +1,5 @@
 import { client } from "../databases/postgres.js";
 
-//Sign Up
-
 export async function verifyEmail(email: string) {
 	return await client.users.findUnique({
 		where: {
@@ -18,5 +16,3 @@ export async function insertUser(email: string, password: string) {
 		}
 	})
 }
-
-//Sign In

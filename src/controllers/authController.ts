@@ -6,12 +6,12 @@ export async function signUp(req: Request, res: Response) {
   const body: authBody = req.body;
 	
   await authService.signUp(body);
-	res.sendStatus(201);
+	res.status(201).send("User created");
 }
 
 export async function signIn(req: Request, res: Response) {
   const body: authBody = req.body;
-  console.log("chegou");
+  
   const token = await authService.signIn(body);
   res.status(200).send(token);
 }

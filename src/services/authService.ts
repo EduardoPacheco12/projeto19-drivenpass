@@ -1,7 +1,6 @@
-import { authBody } from "../types/authTypes.js";
+import { authBody, usersPrismaSchema } from "../types/authTypes.js";
 import * as authRepository from "../repositories/authRepository.js";
 import bcrypt from "bcrypt";
-import { users } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
 export async function signUp(body: authBody) {
@@ -22,7 +21,7 @@ export async function signIn(body: authBody) {
 	const email: string = body.email;
 	const password: string = body.password;
 
-	const verifyEmail: users = await authRepository.verifyEmail(email);
+	const verifyEmail: usersPrismaSchema = await authRepository.verifyEmail(email);
 	if(!verifyEmail) {
 		throw { type: "not_found", message: "Email not found" };
 	}
