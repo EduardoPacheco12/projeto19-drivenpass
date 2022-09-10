@@ -33,7 +33,7 @@ export async function signIn(body: authBody) {
 	}
 
 	const token = jwt.sign({ id }, process.env.SECRET, {
-		expiresIn: 3600
+		expiresIn: 10800 //3h
 	});
 
 	return token;

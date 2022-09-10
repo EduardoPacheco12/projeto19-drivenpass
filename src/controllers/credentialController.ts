@@ -9,3 +9,11 @@ export async function createCredentials(req: Request, res: Response) {
 	await credentialService.createCredentials(id, body);
 	res.status(201).send("Credential created");
 }
+
+export async function getCredencials(req: Request, res: Response) {
+	const { id }: {id: number} = res.locals.id;
+
+	const result = await credentialService.getCredencials(id);
+
+	res.status(200).send(result);
+}

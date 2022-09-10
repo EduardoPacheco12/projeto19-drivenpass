@@ -22,3 +22,11 @@ export async function insertCredential(title: string, url: string, userName: str
 		}
 	})
 }
+
+export async function getCredencialsByUser(userId: number) {
+	return await client.credentials.findMany({
+		where:{
+			userId: userId
+		}
+	})
+}

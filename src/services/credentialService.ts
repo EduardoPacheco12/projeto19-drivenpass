@@ -1,6 +1,6 @@
 import { credentialsBody, credentialsPrismaSchema } from "../types/credentialTypes";
 import * as credentialRepository from "../repositories/credentialRepository.js";
-import { encrypt } from "../utils/cryptrUtils.js";
+import { decrypt, encrypt } from "../utils/cryptrUtils.js";
 
 export async function createCredentials(userId: number, body: credentialsBody) {
 	const title: string = body.title;
@@ -16,4 +16,15 @@ export async function createCredentials(userId: number, body: credentialsBody) {
 
 	await credentialRepository.insertCredential(title, url, userName, encryptPassword, userId)
 
+}
+
+export async function getCredencials(userId: number) {
+
+	const result: credentialsPrismaSchema[] = await credentialRepository.getCredencialsByUser(userId);
+
+	result.map(async (object: credentialsPrismaSchema) => {
+		object.password = await decrypt(object.password);
+	})
+
+	return result;
 }
