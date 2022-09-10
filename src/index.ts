@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import "express-async-errors";
 import { errorHandlerMiddleware } from "./middlewares/errorHandlerMiddleware.js";
+import authRouter from "./routes/authRouter.js"
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ const server = express();
 server.use(cors());
 server.use(json());
 
-
+server.use(authRouter);
 server.use(errorHandlerMiddleware);
 
 const PORT: number = Number(process.env.PORT);
