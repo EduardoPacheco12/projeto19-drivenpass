@@ -1,3 +1,3 @@
 import { users } from "@prisma/client";
 
-export type SignUpBody = Omit<users, "id">;
+export type authBody = Omit<users, "id">;
