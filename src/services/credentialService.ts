@@ -18,7 +18,7 @@ export async function createCredentials(userId: number, body: credentialsBody) {
 }
 
 export async function getCredentials(userId: number) {
-  const result: credentialsPrismaSchema[] = await credentialRepository.getCredencialsByUser(userId);
+  const result: credentialsPrismaSchema[] = await credentialRepository.getCredentialsByUser(userId);
 
   result.map(async (object: credentialsPrismaSchema) => {
     object.password = await decrypt(object.password);
@@ -28,7 +28,7 @@ export async function getCredentials(userId: number) {
 }
 
 export async function getCredential(id: number, userId: number) {
-  const verifyCredential: credentialsPrismaSchema = await credentialRepository.getCredencialsById(id);
+  const verifyCredential: credentialsPrismaSchema = await credentialRepository.getCredentialsById(id);
   if (!verifyCredential) {
     throw { type: 'not_found', message: 'Credential not found' };
   }
@@ -40,4 +40,17 @@ export async function getCredential(id: number, userId: number) {
   verifyCredential.password = await decrypt(verifyCredential.password);
 
   return verifyCredential;
+}
+
+export async function deleteCredential(id: number, userId: number) {
+  const verifyCredential: credentialsPrismaSchema = await credentialRepository.getCredentialsById(id);
+  if (!verifyCredential) {
+    throw { type: 'not_found', message: 'Credential not found' };
+  }
+
+  if (verifyCredential.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Credential unauthorized for deletion' };
+  }
+
+  await credentialRepository.deleteCredentialById(id);
 }
