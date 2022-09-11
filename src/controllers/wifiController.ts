@@ -17,3 +17,12 @@ export async function getWifis(req: Request, res: Response) {
 
   res.status(200).send(result);
 }
+
+export async function getWIfi(req: Request, res: Response) {
+  const userId: number = res.locals.id.id;
+  const id: number = Number(req.params.id);
+
+  const result = await wifiService.getWifi(id, userId);
+
+  res.status(200).send(result);
+}

@@ -21,3 +21,18 @@ export async function getWifis(userId: number) {
 
   return result;
 }
+
+export async function getWifi(id: number, userId: number) {
+  const verifyWifi: wifisPrismaSchema = await wifiRepository.getWifisById(id);
+  if (!verifyWifi) {
+    throw { type: 'not_found', message: 'Credential not found' };
+  }
+
+  if (verifyWifi.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Credential unauthorized for visualization' };
+  }
+
+  verifyWifi.password = await decrypt(verifyWifi.password);
+
+  return verifyWifi;
+}
