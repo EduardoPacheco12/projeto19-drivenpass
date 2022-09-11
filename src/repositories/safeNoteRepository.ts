@@ -28,3 +28,11 @@ export async function getCredentialsByUser(userId: number) {
     },
   });
 }
+
+export async function getSafeNotesById(id: number) {
+  return await client.safeNotes.findUnique({
+    where: {
+      id,
+    },
+  });
+}

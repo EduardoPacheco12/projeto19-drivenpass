@@ -18,3 +18,16 @@ export async function getSafeNotes(userId: number) {
 
   return result;
 }
+
+export async function getSafeNote(id: number, userId: number) {
+  const verifySafeNote: safeNotesPrismaSchema = await safeNoteRepository.getSafeNotesById(id);
+  if (!verifySafeNote) {
+    throw { type: 'not_found', message: 'Safe Note not found' };
+  }
+
+  if (verifySafeNote.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Credential unauthorized for visualization' };
+  }
+
+  return verifySafeNote;
+}
