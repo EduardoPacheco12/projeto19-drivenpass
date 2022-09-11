@@ -1,6 +1,6 @@
 import { cardsBody, cardsPrismaSchema, cardType } from '../types/cardTypes.js';
 import * as cardRepository from '../repositories/cardRepository.js';
-import { encrypt } from '../utils/cryptrUtils.js';
+import { decrypt, encrypt } from '../utils/cryptrUtils.js';
 
 export async function createCards(userId: number, body: cardsBody) {
   const title: string = body.title;
@@ -30,4 +30,47 @@ export async function createCards(userId: number, body: cardsBody) {
     type,
     userId
   );
+}
+
+export async function getCards(userId: number) {
+  const result: cardsPrismaSchema[] = await cardRepository.getCardsByUser(userId);
+
+  result.map(async (object: cardsPrismaSchema) => {
+    object.password = await decrypt(object.password);
+  });
+
+  result.map(async (object: cardsPrismaSchema) => {
+    object.securityCode = await decrypt(object.securityCode);
+  });
+
+  return result;
+}
+
+export async function getCard(id: number, userId: number) {
+  const verifyCard: cardsPrismaSchema = await cardRepository.getCardsById(id);
+  if (!verifyCard) {
+    throw { type: 'not_found', message: 'Card not found' };
+  }
+
+  if (verifyCard.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Card unauthorized for visualization' };
+  }
+
+  verifyCard.password = await decrypt(verifyCard.password);
+  verifyCard.securityCode = await decrypt(verifyCard.securityCode);
+
+  return verifyCard;
+}
+
+export async function deleteCard(id: number, userId: number) {
+  const verifyCard: cardsPrismaSchema = await cardRepository.getCardsById(id);
+  if (!verifyCard) {
+    throw { type: 'not_found', message: 'Card not found' };
+  }
+
+  if (verifyCard.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Card unauthorized for deletion' };
+  }
+
+  await cardRepository.deleteCardsById(id);
 }
