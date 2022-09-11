@@ -25,14 +25,27 @@ export async function getWifis(userId: number) {
 export async function getWifi(id: number, userId: number) {
   const verifyWifi: wifisPrismaSchema = await wifiRepository.getWifisById(id);
   if (!verifyWifi) {
-    throw { type: 'not_found', message: 'Credential not found' };
+    throw { type: 'not_found', message: 'Wi-fi not found' };
   }
 
   if (verifyWifi.userId !== userId) {
-    throw { type: 'unauthorized', message: 'Credential unauthorized for visualization' };
+    throw { type: 'unauthorized', message: 'Wi-fi unauthorized for visualization' };
   }
 
   verifyWifi.password = await decrypt(verifyWifi.password);
 
   return verifyWifi;
+}
+
+export async function deleteWifi(id: number, userId: number) {
+  const verifyCredential: wifisPrismaSchema = await wifiRepository.getWifisById(id);
+  if (!verifyCredential) {
+    throw { type: 'not_found', message: 'Wi-fi not found' };
+  }
+
+  if (verifyCredential.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Wi-fi unauthorized for deletion' };
+  }
+
+  await wifiRepository.deleteWifiById(id);
 }
