@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import credentialRoutes from './routes/credentialRoutes.js';
 import safeNoteRoutes from './routes/safeNoteRoutes.js';
 import cardRoutes from './routes/cardRoutes.js';
+import wifiRoutes from './routes/wifiRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ server.use(authRoutes);
 server.use(credentialRoutes);
 server.use(safeNoteRoutes);
 server.use(cardRoutes);
+server.use(wifiRoutes);
 server.use(errorHandlerMiddleware);
 
 const PORT: number = Number(process.env.PORT);
