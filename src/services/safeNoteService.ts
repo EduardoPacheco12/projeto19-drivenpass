@@ -31,3 +31,16 @@ export async function getSafeNote(id: number, userId: number) {
 
   return verifySafeNote;
 }
+
+export async function deleteSafeNote(id: number, userId: number) {
+  const verifySafeNote = await safeNoteRepository.getSafeNotesById(id);
+  if (!verifySafeNote) {
+    throw { type: 'not_found', message: 'Safe Notes not found' };
+  }
+
+  if (verifySafeNote.userId !== userId) {
+    throw { type: 'unauthorized', message: 'Safe Note unauthorized for deletion' };
+  }
+
+  await safeNoteRepository.deleteSafeNoteById(id);
+}
