@@ -12,3 +12,9 @@ export async function createSafeNotes(userId: number, body: safeNotesBody) {
 
   await safeNoteRepository.insertSafeNote(title, note, userId);
 }
+
+export async function getSafeNotes(userId: number) {
+  const result: safeNotesPrismaSchema[] = await safeNoteRepository.getCredentialsByUser(userId);
+
+  return result;
+}

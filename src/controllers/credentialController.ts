@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { credentialsBody } from '../types/credentialTypes.js';
+import { credentialsBody, credentialsPrismaSchema } from '../types/credentialTypes.js';
 import * as credentialService from '../services/credentialService.js';
 
 export async function createCredentials(req: Request, res: Response) {
@@ -13,7 +13,7 @@ export async function createCredentials(req: Request, res: Response) {
 export async function getCredentials(req: Request, res: Response) {
   const { id }: { id: number } = res.locals.id;
 
-  const result = await credentialService.getCredentials(id);
+  const result: credentialsPrismaSchema[] = await credentialService.getCredentials(id);
 
   res.status(200).send(result);
 }

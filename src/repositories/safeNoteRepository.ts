@@ -20,3 +20,11 @@ export async function insertSafeNote(title: string, note: string, userId: number
     },
   });
 }
+
+export async function getCredentialsByUser(userId: number) {
+  return await client.safeNotes.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+}
