@@ -3,7 +3,11 @@
     "esModuleInterop": true,
     "module": "es6",
     "moduleResolution": "node",
-		"outDir": "dist"
+    "outDir": "dist",
+    "scripts": {
+      "build": "tsc && npx prisma migrate deploy",
+      "start": "node dist/index.js"
+    }
   },
   "ts-node": {
     "esm": true
